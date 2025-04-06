@@ -1,0 +1,50 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:task2.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="task2.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="task2">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <StackPanel>
+        <StackPanel Orientation="Vertical" Margin="5">
+            <StackPanel Orientation="Horizontal" IsVisible="{Binding MoveCopyNotStarted}">
+                <Button Content="Add File" Command="{Binding AddFileCommand}" Margin="2"/>
+                <Button Content="Add Directory" Command="{Binding AddDirectoryCommand}" Margin="2"/>
+                <Button Content="Delete" Command="{Binding DeleteNodeCommand}" Margin="2"/>
+                <Button Content="Copy / Move" Command="{Binding StartCopyMoveCommand}" Margin="2"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" IsVisible="{Binding MoveCopyStarted}">
+                <Button Content="Cancel" Command="{Binding CancelCopyMoveCommand}" Margin="2"/>
+                <Button Content="Copy To" Command="{Binding CopyToCommand}" Margin="2"/>
+                <Button Content="Move To" Command="{Binding MoveToCommand}" Margin="2"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <TreeView
+            ItemsSource="{Binding Root}"
+            SelectedItem="{Binding SelectedNode}">
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/draft.png" Margin="2" IsVisible="{Binding IsFile}" Width="18" Height="18" />
+                        <Image Source="/Assets/folder.png" Margin="2" IsVisible="{Binding IsDirectory}" Width="18" Height="18" />
+                        <TextBlock Text="{Binding Name}" Margin="2" />
+                        <TextBlock Text="{Binding Size}" Margin="2,2,0,2" FontSize="12" />
+                        <TextBlock Text=" bytes" Margin="0,2,2,2" FontSize="12" />
+                    </StackPanel>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </StackPanel>
+
+</Window>
