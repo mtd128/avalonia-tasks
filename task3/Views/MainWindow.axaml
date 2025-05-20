@@ -1,0 +1,54 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels1="clr-namespace:task3.ViewModels"
+        xmlns:views1="clr-namespace:task3.Views"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+        x:Class="task3.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Система Конвейеров"
+        WindowStartupLocation="CenterScreen"
+        Width="1000" Height="700"
+        x:DataType="viewModels1:MainWindowViewModel">
+
+    <Design.DataContext>
+        <viewModels1:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid ColumnDefinitions="*,300" RowDefinitions="Auto,*" Margin="10">
+        <!-- Панель управления -->
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="10" Margin="0,0,0,10">
+            <Button Content="Добавить Конвейер" Command="{Binding AddConveyorCommand}"/>
+            <Button Content="Удалить Конвейер" Command="{Binding RemoveLastConveyorCommand}"/>
+        </StackPanel>
+
+        <!-- Область конвейеров -->
+        <ScrollViewer Grid.Row="1" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Conveyors}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <views1:ConveyorView DataContext="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                 <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Лог -->
+        <DockPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,0">
+            <TextBlock DockPanel.Dock="Top" Text="Лог событий:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <ListBox ItemsSource="{Binding LogMessages}" BorderThickness="1" BorderBrush="Gray">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="10"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+    </Grid>
+</Window>

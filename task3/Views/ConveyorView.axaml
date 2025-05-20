@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels1="clr-namespace:task3.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="100"
+             x:Class="task3.Views.ConveyorView"
+             x:DataType="viewModels1:ConveyorViewModel">
+    <Design.DataContext>
+        <viewModels1:ConveyorViewModel Name="Тестовый Конвейер (Дизайн)" CanvasX="10" CanvasY="10"/>
+    </Design.DataContext>
+
+    <StackPanel Orientation="Vertical" Spacing="5" Margin="0,0,0,10">
+        <TextBlock Text="{Binding StatusMessage}" FontWeight="Bold"/>
+        <Grid Height="{Binding Height}" Width="{Binding Length}">
+            <!-- Сам конвейер (фон) -->
+            <Border Background="LightGray" BorderBrush="DarkGray" BorderThickness="1"
+                    Width="{Binding Length}" Height="{Binding Height}">
+                <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+            </Border>
+            
+            <ItemsControl ItemsSource="{Binding DisplayParts}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="viewModels1:PartViewModel">
+                        <Border Background="CornflowerBlue" BorderBrush="Black" BorderThickness="1"
+                                Width="{Binding Width}" Height="{Binding Height}">
+                            <TextBlock Text="{Binding Id}" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+         <Button Content="{Binding IsRunning, Converter={StaticResource BoolToPlayPauseConverter}, FallbackValue=Старт/Стоп}" 
+                Command="{Binding TogglePauseResumeCommand}" HorizontalAlignment="Left"/>
+    </StackPanel>
+</UserControl>
